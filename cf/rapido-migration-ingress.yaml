@@ -1,0 +1,18 @@
+Description: Ingres rule for migration pipeline
+Parameters:
+  SecurityGroupId:
+    Description: Security group Id
+    Type: String
+  AccessCidr:
+    Description: CIDR to have access
+    Type: String
+Resources:
+  SecurityGroupPipelineIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+        CidrIp: !Join ['/', [!Ref AccessCidr, '32']]
+        Description: Pipeline ingress security rule
+        FromPort: 5432
+        GroupId: !Ref SecurityGroupId
+        IpProtocol: tcp
+        ToPort: 5432

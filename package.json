@@ -1,0 +1,48 @@
+{
+  "name": "rapido-db-migrations",
+  "version": "1.0.0",
+  "description": "Rapido database migrations",
+  "main": "./src/migrate.js",
+  "keywords": [
+    "rapido",
+    "postgres",
+    "migrations"
+  ],
+  "author": "Sangram Reddy",
+  "devDependencies": {
+    "aws-sdk": "^2.421.0",
+    "aws-sdk-mock": "^4.3.1",
+    "codecov": "^3.2.0",
+    "eslint": "^5.15.1",
+    "jest": "^24.5.0",
+    "jest-junit": "^6.3.0",
+    "jest-junit-reporter": "^1.1.0",
+    "json-loader": "^0.5.7",
+    "prettier": "^1.16.4",
+    "serverless": "^1.38.0",
+    "serverless-domain-manager": "^3.1.0",
+    "serverless-offline": "^4.9.0",
+    "serverless-webpack": "^5.2.0",
+    "webpack": "^4.29.6"
+  },
+  "dependencies": {
+    "node-fetch": "^2.3.0",
+    "postgres-migrations": "^3.0.1",
+    "uuid": "^3.3.2"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  },
+  "jest-junit": {
+    "output": "./test/junit.xml"
+  },
+  "scripts": {
+    "test": "node ./src/tests/migrate.js",
+    "dev-deploy": "serverless deploy --stage dev",
+    "prod-deploy": "serverless deploy --stage prod",
+    "dev-remove": "serverless remove --stage dev",
+    "prod-remove": "serverless remove --stage prod",
+    "lint": "./node_modules/.bin/eslint src"
+  }
+}

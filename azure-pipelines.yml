@@ -1,0 +1,62 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+trigger:
+  branches:
+    include:
+    - master
+    - feature/*
+    - bug/*
+
+pr:
+  branches:
+    include:
+    - master
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: 3.6
+    architecture: 'x64'
+
+- script: |
+    pip install setuptools
+    pip install awscli
+  displayName: 'Installing AWS CLI'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- task: Npm@1
+  displayName: 'npm run test'
+  inputs:
+    command: custom
+    customCommand: 'run test'
+
+- task: Npm@1
+  displayName: 'Deploying functions to DEV'
+  inputs:
+    command: custom
+    customCommand: 'run dev-deploy'
+  env:
+    AWS_ACCESS_KEY_ID: $(DEV_AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(DEV_AWS_SECRET_ACCESS_KEY)
+  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+
+- task: Npm@1
+  displayName: 'Deploying functions to PROD'
+  inputs:
+    command: custom
+    customCommand: 'run dev-deploy' # will be changed to prod when we are going to go live
+  env:
+    AWS_ACCESS_KEY_ID: $(PROD_AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(PROD_AWS_SECRET_ACCESS_KEY)
+    USER_POOL_ID: $(PROD_USER_POOL_ID)
+    CLIENT_ID: $(PROD_CLIENT_ID)
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')

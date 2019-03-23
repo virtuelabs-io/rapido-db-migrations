@@ -1,0 +1,89 @@
+service: DatabaseMigrations
+
+provider:
+  name: aws
+  vpc:
+    securityGroupIds:
+      - sg-bdeab9d6
+    subnetIds:
+      - subnet-9c76e2f5
+      - subnet-be6d8af2
+      - subnet-e9b86893
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-2
+  db-user: ${env:DB_USER}
+  db-password: ${env:DB_PASSWORD}
+  db-host: ${env:HOST}
+  db-port: ${env:PORT}
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  exclude:
+    - test/**
+    - .git/**
+    - .serverless/**
+
+functions:
+  migrate:
+    name: database-migrations-${self:provider.stage}
+    role: MigrationFunctionsLambdaRole
+    handler: src/migrate.fun
+    memorySize: 128
+    timeout: 20
+    environment:
+      DB_USER: ${self:provider.db-user}
+      DB_PASSWORD: ${self:provider.db-password}
+      HOST: ${self:provider.db-host}
+      PORT: ${self:provider.db-port}
+    tags:
+      purpose: lambda function for deploying database migrations
+    events:
+      - http:
+          path: /internal/migration
+          method: post
+          integration: lambda
+          authorizer:
+            type: aws_iam
+
+resources:
+  Resources:
+    MigrationFunctionsLambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: "sts:AssumeRole"
+        Path: /
+        Policies:
+          - PolicyName: logs
+            PolicyDocument:
+              Statement:
+                Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
+          - PolicyName: lambda
+            PolicyDocument:
+              Statement:
+                Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
+          - PolicyName: NI
+            PolicyDocument:
+              Statement:
+                Effect: "Allow"
+                Action:
+                  - "ec2:CreateNetworkInterface"
+                  - "ec2:DescribeNetworkInterfaces"
+                  - "ec2:DetachNetworkInterface"
+                  - "ec2:DeleteNetworkInterface"
+                Resource: "*"

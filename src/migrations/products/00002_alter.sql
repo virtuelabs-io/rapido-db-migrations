@@ -1,0 +1,2 @@
+ALTER TABLE account ALTER COLUMN last_login SET DEFAULT NULL;
+ALTER TABLE account ADD COLUMN test_mig_new_col VARCHAR (50);
