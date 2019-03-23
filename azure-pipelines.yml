@@ -33,11 +33,23 @@ steps:
   inputs:
     command: install
 
+- script: |
+    docker run --rm -d --name rapido-pg \
+     -e POSTGRES_PASSWORD=admin \
+     -p 5432:5432 \
+     postgres:10.7
+  displayName: 'Starting local PG'
+
 - task: Npm@1
   displayName: 'npm run test'
   inputs:
     command: custom
     customCommand: 'run test'
+  env:
+    DB_USER: $(LOCAL_DB_USER)
+    DB_PASSWORD: $(LOCAL_DB_PASSWORD)
+    HOST: $(LOCAL_HOST)
+    PORT: $(LOCAL_PORT)
 
 - task: Npm@1
   displayName: 'Deploying functions to DEV'
@@ -47,16 +59,22 @@ steps:
   env:
     AWS_ACCESS_KEY_ID: $(DEV_AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(DEV_AWS_SECRET_ACCESS_KEY)
+    DB_USER: $(DEV_DB_USER)
+    DB_PASSWORD: $(DEV_DB_PASSWORD)
+    HOST: $(DEV_HOST)
+    PORT: $(DEV_PORT)
   condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
 
 - task: Npm@1
   displayName: 'Deploying functions to PROD'
   inputs:
     command: custom
-    customCommand: 'run dev-deploy' # will be changed to prod when we are going to go live
+    customCommand: 'run dev-deploy'
   env:
     AWS_ACCESS_KEY_ID: $(PROD_AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(PROD_AWS_SECRET_ACCESS_KEY)
-    USER_POOL_ID: $(PROD_USER_POOL_ID)
-    CLIENT_ID: $(PROD_CLIENT_ID)
+    DB_USER: $(PROD_DB_USER)
+    DB_PASSWORD: $(PROD_DB_PASSWORD)
+    HOST: $(PROD_HOST)
+    PORT: $(PROD_PORT)
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
