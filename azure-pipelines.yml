@@ -8,6 +8,14 @@ trigger:
     - feature/*
     - bug/*
 
+variables:
+  fargate: true
+  lambda: false
+  imageName: 'rapido-db-migrations'
+  major: 0
+  minor: 0
+  patch: 1
+
 pr:
   branches:
     include:
@@ -46,10 +54,10 @@ steps:
     command: custom
     customCommand: 'run test'
   env:
-    DB_USER: $(LOCAL_DB_USER)
-    DB_PASSWORD: $(LOCAL_DB_PASSWORD)
-    HOST: $(LOCAL_HOST)
-    PORT: $(LOCAL_PORT)
+    DB_USER: postgres
+    DB_PASSWORD: admin
+    HOST: localhost
+    PORT: 5432
 
 - task: Npm@1
   displayName: 'Deploying functions to DEV'
@@ -63,7 +71,7 @@ steps:
     DB_PASSWORD: $(DEV_DB_PASSWORD)
     HOST: $(DEV_HOST)
     PORT: $(DEV_PORT)
-  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: and(ne(variables['Build.SourceBranch'], 'refs/heads/master'), $(lambda))
 
 - task: Npm@1
   displayName: 'Deploying functions to PROD'
@@ -77,4 +85,22 @@ steps:
     DB_PASSWORD: $(PROD_DB_PASSWORD)
     HOST: $(PROD_HOST)
     PORT: $(PROD_PORT)
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), $(lambda))
+
+- script: |
+    docker build -t $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) .
+  env:
+    DOCKER_REPO: $(DOCKER_REPO)
+  displayName: 'Build docker image and tag it'
+
+- script: |
+    eval $(aws ecr get-login --no-include-email --region eu-west-2)
+    docker push $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch)
+    docker tag $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) $DOCKER_REPO/$(imageName):latest
+    docker push $DOCKER_REPO/$(imageName):latest
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), $(fargate))
+  env:
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+    DOCKER_REPO: $(DOCKER_REPO)
+  displayName: 'Publish docker image to ECR'
