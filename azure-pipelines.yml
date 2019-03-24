@@ -48,7 +48,7 @@ steps:
      postgres:10.7
      sleep 10
      npm run test
-  displayName: 'Starting local PG'
+  displayName: 'Running migration test'
   env:
     DB_USER: postgres
     DB_PASSWORD: admin
