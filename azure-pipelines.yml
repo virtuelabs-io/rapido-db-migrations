@@ -71,7 +71,7 @@ steps:
     DB_PASSWORD: $(DEV_DB_PASSWORD)
     HOST: $(DEV_HOST)
     PORT: $(DEV_PORT)
-  condition: and(ne(variables['Build.SourceBranch'], 'refs/heads/master'), variables['lambda'])
+  condition: and(ne(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['lambda'], true))
 
 - task: Npm@1
   displayName: 'Deploying functions to PROD'
@@ -85,7 +85,7 @@ steps:
     DB_PASSWORD: $(PROD_DB_PASSWORD)
     HOST: $(PROD_HOST)
     PORT: $(PROD_PORT)
-  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), variables['lambda'])
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['lambda'], true))
 
 - script: |
     docker build -t $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) .
@@ -98,7 +98,7 @@ steps:
     docker push $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch)
     docker tag $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) $DOCKER_REPO/$(imageName):latest
     docker push $DOCKER_REPO/$(imageName):latest
-  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), variables['fargate'])
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['fargate'], true))
   env:
     AWS_ACCESS_KEY_ID: $(PROD_AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(PROD_AWS_SECRET_ACCESS_KEY)
