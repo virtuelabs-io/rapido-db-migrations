@@ -46,13 +46,9 @@ steps:
      -e POSTGRES_PASSWORD=admin \
      -p 5432:5432 \
      postgres:10.7
+     sleep 10
+     npm run test
   displayName: 'Starting local PG'
-
-- task: Npm@1
-  displayName: 'npm run test'
-  inputs:
-    command: custom
-    customCommand: 'run test'
   env:
     DB_USER: postgres
     DB_PASSWORD: admin
