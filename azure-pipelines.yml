@@ -100,7 +100,7 @@ steps:
     docker push $DOCKER_REPO/$(imageName):latest
   condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), $(fargate))
   env:
-    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+    AWS_ACCESS_KEY_ID: $(PROD_AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(PROD_AWS_SECRET_ACCESS_KEY)
     DOCKER_REPO: $(DOCKER_REPO)
   displayName: 'Publish docker image to ECR'
