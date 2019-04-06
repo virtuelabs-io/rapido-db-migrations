@@ -1,8 +1,7 @@
 var migration = require('../helpers/migrator')
 
 let databases = [
-    "products",
-    "orders"
+    "customer"
 ]
 
 databases.forEach(database => {
