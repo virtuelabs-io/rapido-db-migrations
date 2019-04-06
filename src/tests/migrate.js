@@ -1,16 +1,25 @@
 var migration = require('../helpers/migrator')
 
 let databases = [
-    "products",
-    "orders"
+    "customer"
 ]
+
+let resolvedDatabases = []
 
 databases.forEach(database => {
     var result = migration.run(database)
     result.then( value => {
-        console.log(value)
+        console.log("Finished processing migrations for: "  + value)
+        migrationMarker(value)
     }).catch(e => {
         console.log(e)
+        process.exit(1)
     })
 })
 
+function migrationMarker(database){
+    resolvedDatabases.push(database)
+    if(resolvedDatabases == database){
+        process.exit()
+    }
+}

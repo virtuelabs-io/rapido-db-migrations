@@ -10,7 +10,6 @@ trigger:
 
 variables:
   fargate: true
-  lambda: false
   imageName: 'rapido-db-migrations'
   major: 0
   minor: 0
@@ -42,46 +41,19 @@ steps:
     command: install
 
 - script: |
-    docker run --rm -d --name rapido-pg \
-     -e POSTGRES_PASSWORD=admin \
-     -p 5432:5432 \
-     postgres:10.7
-     sleep 10
-     npm run test
+    docker run --rm -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6
+    sleep 20
+    npm run resolve || true
+    sleep 2
+    npm run init
+    sleep 2
+    npm run migrate
   displayName: 'Running migration test'
   env:
-    DB_USER: postgres
+    DB_USER: root
     DB_PASSWORD: admin
     HOST: localhost
-    PORT: 5432
-
-- task: Npm@1
-  displayName: 'Deploying functions to DEV'
-  inputs:
-    command: custom
-    customCommand: 'run dev-deploy'
-  env:
-    AWS_ACCESS_KEY_ID: $(DEV_AWS_ACCESS_KEY_ID)
-    AWS_SECRET_ACCESS_KEY: $(DEV_AWS_SECRET_ACCESS_KEY)
-    DB_USER: $(DEV_DB_USER)
-    DB_PASSWORD: $(DEV_DB_PASSWORD)
-    HOST: $(DEV_HOST)
-    PORT: $(DEV_PORT)
-  condition: and(ne(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['lambda'], true))
-
-- task: Npm@1
-  displayName: 'Deploying functions to PROD'
-  inputs:
-    command: custom
-    customCommand: 'run dev-deploy'
-  env:
-    AWS_ACCESS_KEY_ID: $(PROD_AWS_ACCESS_KEY_ID)
-    AWS_SECRET_ACCESS_KEY: $(PROD_AWS_SECRET_ACCESS_KEY)
-    DB_USER: $(PROD_DB_USER)
-    DB_PASSWORD: $(PROD_DB_PASSWORD)
-    HOST: $(PROD_HOST)
-    PORT: $(PROD_PORT)
-  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['lambda'], true))
+    PORT: 3306
 
 - script: |
     docker build -t $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) .

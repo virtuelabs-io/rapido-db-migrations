@@ -1,33 +1,26 @@
-const { createDb, migrate } = require("postgres-migrations")
+var mysql = require('mysql');
+let {CommandsRunner, MysqlDriver} = require('node-db-migration');
 
-function run(database) {
+async function run(database){
     return new Promise((resolve, reject) => {
-        createDb( database, {
-            user: process.env.DB_USER,
-                password: process.env.DB_PASSWORD,
-                host: process.env.HOST,
-                port: Number(process.env.PORT)
-        }).then(() => {
-            return migrate({
-                database: database,
-                user: process.env.DB_USER,
-                password: process.env.DB_PASSWORD,
-                host: process.env.HOST,
-                port: Number(process.env.PORT)
-            }, './src/migrations/' + database)
-        }).then(() => {
-            let r = [
-                "Successfully migrated",
-                database,
-                "in",
-                "./src/migrations/" + database
-            ].join(" ")
-            console.log(r)
-            resolve( JSON.stringify({
-                result: r
-            }))
-        }).catch((err) => {
-            reject(err)
+        var connection = mysql.createConnection({
+            "host": process.env.HOST,
+            "port": Number(process.env.PORT),
+            "user": process.env.DB_USER,
+            "password": process.env.DB_PASSWORD,
+            "database": process.env.ROOT_DB,
+            "multipleStatements" : true
+        });
+        connection.connect(function(err) {
+            let migrations = new CommandsRunner({
+                driver: new MysqlDriver(connection),
+                directoryWithScripts: './src/migrations/' + database,
+            });
+            migrations.run(process.argv[2]).then(() => {
+                resolve( database ) 
+            }).catch((err) => {
+                reject(err)
+            })
         })
     })
 }
