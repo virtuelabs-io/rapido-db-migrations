@@ -45,7 +45,7 @@ steps:
     sleep 25
     docker ps -a
     npm run init
-    sleep 2
+    sleep 5
     npm run migrate
   displayName: 'Running migration test'
   env:
