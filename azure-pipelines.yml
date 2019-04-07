@@ -41,7 +41,7 @@ steps:
     command: install
 
 - script: |
-    docker run --rm -d --name test-mysql-db -e MYSQL_DATABASE=rapido -e MYSQL_ROOT_PASSWORD=admin -p 3306:3306 mysql:5.7
+    docker run --rm -d --name test-mysql-db -e MYSQL_DATABASE=rapido -e MYSQL_ROOT_PASSWORD=admin -p 3307:3306 mysql:5.7
     sleep 15
     npm run init
     sleep 2
@@ -51,7 +51,7 @@ steps:
     DB_USER: root
     DB_PASSWORD: admin
     HOST: localhost
-    PORT: 3306
+    PORT: 3307
     ROOT_DB: rapido
 
 - script: |
