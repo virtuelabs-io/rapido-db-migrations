@@ -6,13 +6,19 @@ Parameters:
   AccessCidr:
     Description: CIDR to have access
     Type: String
+  FromPort:
+    Description: From Port
+    Type: String
+  ToPort:
+    Description: To Port
+    Type: String
 Resources:
   SecurityGroupPipelineIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
         CidrIp: !Join ['/', [!Ref AccessCidr, '32']]
         Description: Pipeline ingress security rule
-        FromPort: 5432
+        FromPort: !Ref FromPort
         GroupId: !Ref SecurityGroupId
         IpProtocol: tcp
-        ToPort: 5432
+        ToPort: !Ref ToPort
