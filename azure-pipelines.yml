@@ -41,13 +41,18 @@ steps:
     command: install
 
 - script: |
-    echo "Due to enable tests"
+    docker run --rm -d --name test-mysql-db -e MYSQL_DATABASE=rapido -e MYSQL_ROOT_PASSWORD=admin -p 3306:3306 mysql:5.7
+    sleep 15
+    npm run init
+    sleep 2
+    npm run migrate
   displayName: 'Running migration test'
   env:
     DB_USER: root
     DB_PASSWORD: admin
     HOST: localhost
     PORT: 3306
+    ROOT_DB: rapido
 
 - script: |
     docker build -t $DOCKER_REPO/$(imageName):v$(major).$(minor).$(patch) .
