@@ -8,7 +8,7 @@ async function run(database){
             "port": Number(process.env.PORT),
             "user": process.env.DB_USER,
             "password": process.env.DB_PASSWORD,
-            "database": database,
+            "database": process.env.ROOT_DB,
             "multipleStatements" : true
         });
         connection.connect(function(err) {
