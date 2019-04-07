@@ -42,7 +42,8 @@ steps:
 
 - script: |
     docker run --rm -d --name test-mysql-db -e MYSQL_DATABASE=rapido -e MYSQL_ROOT_PASSWORD=admin -p 3307:3306 mysql:5.7
-    sleep 15
+    sleep 25
+    docker ps -a
     npm run init
     sleep 2
     npm run migrate
