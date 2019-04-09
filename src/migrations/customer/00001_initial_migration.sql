@@ -30,9 +30,13 @@ CREATE TABLE IF NOT EXISTS customer.company (
     customer_id BINARY(16),
     company_name VARCHAR(255),
     vat_number VARCHAR(30),
-    address_id MEDIUMINT,
-    PRIMARY KEY (customer_id),
-    FOREIGN KEY (address_id) REFERENCES customer.address(id)
+    addr_1 VARCHAR(255),
+    addr_2 VARCHAR(255),
+    city VARCHAR(255),
+    county VARCHAR(255),
+    country VARCHAR(100),
+    postcode VARCHAR(10),
+    PRIMARY KEY (customer_id)
 );
 
 CREATE TABLE IF NOT EXISTS customer.payment (
