@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS customer;
+
 CREATE TABLE IF NOT EXISTS customer.payment_type (
     id TINYINT,
     kind VARCHAR(100),
@@ -29,7 +30,6 @@ CREATE TABLE IF NOT EXISTS customer.address (
 CREATE TABLE IF NOT EXISTS customer.company (
     customer_id BINARY(16),
     company_name VARCHAR(255),
-    vat_number VARCHAR(30),
     addr_1 VARCHAR(255),
     addr_2 VARCHAR(255),
     city VARCHAR(255),
@@ -49,5 +49,6 @@ CREATE TABLE IF NOT EXISTS customer.payment (
     address_id MEDIUMINT,
     payment_type_id TINYINT,
     PRIMARY KEY (id),
-    FOREIGN KEY (address_id) REFERENCES customer.address(id)
+    FOREIGN KEY (address_id) REFERENCES customer.address(id),
+    FOREIGN KEY (payment_type_id) REFERENCES customer.payment_type(id)
 );
