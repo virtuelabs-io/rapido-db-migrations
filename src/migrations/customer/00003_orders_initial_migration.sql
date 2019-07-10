@@ -6,16 +6,31 @@ CREATE TABLE IF NOT EXISTS orders.order_status (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS orders.country (
+    id TINYINT,
+    country VARCHAR(100),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS orders.vat (
+    country_id TINYINT,
+    vat DECIMAL(5,2),
+    PRIMARY KEY (country_id),
+    FOREIGN KEY (country_id) REFERENCES orders.country(id)
+);
+
 CREATE TABLE IF NOT EXISTS orders.header (
     id BIGINT AUTO_INCREMENT,
     customer_id BINARY(16),
     order_price DECIMAL(11,2),
     order_status_id TINYINT,
     charge_id VARCHAR(100),
+    delivery_address_id MEDIUMINT,
     created_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_on DATETIME ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (order_status_id) REFERENCES orders.order_status(id)
+    FOREIGN KEY (order_status_id) REFERENCES orders.order_status(id),
+    FOREIGN KEY (delivery_address_id) REFERENCES customer.address(id)
 );
 
 CREATE TABLE IF NOT EXISTS orders.item (

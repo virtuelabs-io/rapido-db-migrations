@@ -1,9 +1,7 @@
 var migration = require('../helpers/migrator')
 
 let databases = [
-    "customer",
-    "cart",
-    "orders"
+    "customer"
 ]
 
 let resolvedDatabases = []
