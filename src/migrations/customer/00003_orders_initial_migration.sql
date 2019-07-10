@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS orders.header (
 CREATE TABLE IF NOT EXISTS orders.item (
     id BIGINT AUTO_INCREMENT,
     order_id BIGINT,
-    customer_id BINARY(16),
     product_id MEDIUMINT,
     unit_price DECIMAL(11,2),
     quantity DECIMAL(9,2),
