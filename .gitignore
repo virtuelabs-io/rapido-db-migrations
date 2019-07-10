@@ -116,3 +116,4 @@ About
 .secrets
 /test/*.xml
 secrets/
+.vscode/
