@@ -54,10 +54,10 @@ BEGIN
             delivery_address_id
         )
         VALUES (
-			in_customer_id, -- UUID_TO_BIN('dac81f99-a24d-4756-a7e2-cc974ed25a7e')
-			var_order_total_price, -- to be replaced with total amount
+			in_customer_id,
+			var_order_total_price,
 			in_delivery_address_id,
-            'ch_unknown', -- charge not completed
+            'ch_incomplete',
             1 -- INCOMPLETE
         );
         
