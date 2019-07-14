@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS orders.create_order;
 
-DELIMITER $$
+DELIMITER //
 
 CREATE PROCEDURE orders.create_order ( IN in_customer_id BINARY(16) , IN in_delivery_address_id MEDIUMINT )
 BEGIN
@@ -97,6 +97,6 @@ BEGIN
 		ON h.id = i.order_id
 	WHERE h.id = @var_order_id;
     
-END $$
+END //
 
 DELIMITER ;
