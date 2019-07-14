@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS orders.item (
     product_id MEDIUMINT,
     unit_price DECIMAL(11,2),
     quantity DECIMAL(9,2),
+    total_price DECIMAL(11,2),
     PRIMARY KEY (id),
     FOREIGN KEY (order_id) REFERENCES orders.header(id),
     FOREIGN KEY (product_id) REFERENCES orders.products(id)
