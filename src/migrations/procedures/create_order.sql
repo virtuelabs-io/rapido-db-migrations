@@ -84,18 +84,7 @@ BEGIN
     
 	COMMIT;
     
-    SELECT h.id,
-           h.order_status_id,
-           h.delivery_address_id,
-           i.product_id,
-           i.quantity,
-           i.unit_price,
-           i.total_price,
-           h.order_price
-    FROM orders.header AS h
-    INNER JOIN orders.item AS i
-		ON h.id = i.order_id
-	WHERE h.id = @var_order_id;
+    CALL orders.get_order(in_customer_id, @var_order_id);
     
 END $$
 
