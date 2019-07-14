@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS orders.cancel_order;
 
 DELIMITER $$
 
-CREATE PROCEDURE orders.cancel_order ( IN in_customer_id BINARY(16) , IN in_order_id BIGINT, OUT order_cancelled BOOLEAN )
+CREATE PROCEDURE orders.cancel_order ( IN in_customer_id BINARY(16) , IN in_order_id BIGINT )
 BEGIN
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION 
@@ -20,7 +20,7 @@ BEGIN
     
 	COMMIT;
     
-    SET order_cancelled = TRUE;
+    SELECT TRUE;
     
 END $$
 
