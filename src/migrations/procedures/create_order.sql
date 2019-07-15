@@ -49,9 +49,9 @@ BEGIN
 		INSERT INTO orders.header (
 			customer_id,
             order_price,
-            order_status_id,
+            delivery_address_id,
             charge_id,
-            delivery_address_id
+            order_status_id
         )
         VALUES (
 			in_customer_id,
