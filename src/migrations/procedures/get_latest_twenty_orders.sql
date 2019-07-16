@@ -34,10 +34,11 @@ BEGIN
 		ON h.id = i.order_id
 	LEFT JOIN customer.address AS a
 		on h.delivery_address_id = a.id
-    AND   h.customer_id = in_customer_id;
+    WHERE h.customer_id = in_customer_id
+    AND   h.order_status_id <> 1;
     -- Clean up
     DROP TEMPORARY TABLE IF EXISTS tmp_orders;
-    
+
 END $$
 
 DELIMITER ;
