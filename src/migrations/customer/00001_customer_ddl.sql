@@ -9,14 +9,15 @@ CREATE TABLE IF NOT EXISTS customer.address_type (
 CREATE TABLE IF NOT EXISTS customer.address (
     id MEDIUMINT AUTO_INCREMENT,
     customer_id BINARY(16),
-    full_name VARCHAR(255),
+    full_name VARCHAR(255) DEFAULT NULL,
     address_type_id TINYINT,
-    addr_1 VARCHAR(255),
-    addr_2 VARCHAR(255),
-    city VARCHAR(255),
-    county VARCHAR(255),
-    country VARCHAR(100),
-    postcode VARCHAR(10),
+    addr_1 VARCHAR(255) DEFAULT NULL,
+    addr_2 VARCHAR(255) DEFAULT NULL,
+    city VARCHAR(255) DEFAULT NULL,
+    county VARCHAR(255) DEFAULT NULL,
+    country VARCHAR(100) DEFAULT NULL,
+    postcode VARCHAR(10) DEFAULT NULL,
+    active BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (id),
     FOREIGN KEY (address_type_id) REFERENCES customer.address_type(id)
 );
