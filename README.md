@@ -1,6 +1,7 @@
 # Rapido build db migrations
 
 ## Initialize migrations
+
 ```sh
 docker run --rm --name db-migrations \
     -e DB_USER=$USERNAME \
@@ -12,6 +13,7 @@ docker run --rm --name db-migrations \
 ```
 
 ## Run migrations
+
 ```sh
 docker run --rm --name db-migrations \
     -e DB_USER=$USERNAME \
