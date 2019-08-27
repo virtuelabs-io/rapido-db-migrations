@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS ratings.feedback (
     summary TEXT,
     helpful MEDIUMINT,
     active BOOLEAN DEFAULT TRUE,
+    created_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_on DATETIME ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
