@@ -29,7 +29,11 @@ BEGIN
             in_rating,
             in_summary,
             0
-        );
+        )
+        ON DUPLICATE KEY UPDATE
+			title = in_title,
+			rating = in_rating,
+			summary = in_summary;
 
         -- Setting feedback id
         SET @var_feedback_id = LAST_INSERT_ID();
