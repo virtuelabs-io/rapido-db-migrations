@@ -19,6 +19,13 @@ CREATE TABLE IF NOT EXISTS orders.vat (
     FOREIGN KEY (country_id) REFERENCES orders.country(id)
 );
 
+CREATE TABLE IF NOT EXISTS orders.delivery_cost (
+    id TINYINT,
+    cost DECIMAL(9,2),
+    description VARCHAR(100),
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS orders.products (
     id MEDIUMINT,
     unit_price DECIMAL(11,2),
@@ -46,6 +53,9 @@ CREATE TABLE IF NOT EXISTS orders.header (
     order_status_id TINYINT,
     charge_id VARCHAR(100),
     delivery_address_id MEDIUMINT,
+    vat DECIMAL(11,2),
+    delivery_cost DECIMAL(9,2),
+    order_price_total DECIMAL(11,2),
     created_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_on DATETIME ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
@@ -60,6 +70,7 @@ CREATE TABLE IF NOT EXISTS orders.item (
     unit_price DECIMAL(11,2),
     quantity DECIMAL(9,2),
     total_price DECIMAL(11,2),
+    item_vat DECIMAL(11,2),
     PRIMARY KEY (id),
     FOREIGN KEY (order_id) REFERENCES orders.header(id),
     FOREIGN KEY (product_id) REFERENCES orders.products(id)

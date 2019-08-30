@@ -7,7 +7,10 @@ INSERT INTO orders.order_status VALUES (5, 'Returned');
 -- Countries
 INSERT INTO orders.country VALUES (1, 'United Kingdom');
 -- Vat
-INSERT INTO orders.vat VALUES (1, 0.10);
+INSERT INTO orders.vat VALUES (1, 0.20);
+-- Delivery Cost
+INSERT INTO orders.delivery_cost VALUES (1, 0, "Standard delivery");
+INSERT INTO orders.delivery_cost VALUES (2, 50, "Next day delivery");
 -- Products
 INSERT INTO orders.products (id, unit_price) VALUES (1, 222.99);
 INSERT INTO orders.products (id, unit_price) VALUES (2, 219.00);
