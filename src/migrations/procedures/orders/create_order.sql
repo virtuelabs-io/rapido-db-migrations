@@ -32,7 +32,7 @@ BEGIN
 		AND   orders.header.order_status_id = 1;
 
         -- Get VAT percentage for UK
-        SELECT vat INTO var_vat_percent FROM orders.vat WHERE id = 1;
+        SELECT vat INTO var_vat_percent FROM orders.vat WHERE country_id = 1;
 
         -- Get cart details
         DROP TEMPORARY TABLE IF EXISTS tmp_cart_items;
