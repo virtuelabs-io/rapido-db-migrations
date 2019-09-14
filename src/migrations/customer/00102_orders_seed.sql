@@ -58,8 +58,10 @@ INSERT INTO orders.products (id, unit_price) VALUES (43, 31.67);
 INSERT INTO orders.products (id, unit_price) VALUES (44, 25.60);
 INSERT INTO orders.products (id, unit_price) VALUES (45, 32.39);
 INSERT INTO orders.products (id, unit_price) VALUES (46, 32.39);
-INSERT INTO orders.products (id, unit_price) VALUES (47, 37.71);
-
+INSERT INTO orders.products (id, unit_price) VALUES (47, 21.71);
+INSERT INTO orders.products (id, unit_price) VALUES (48, 17.71);
+INSERT INTO orders.products (id, unit_price) VALUES (49, 25.71);
+INSERT INTO orders.products (id, unit_price) VALUES (50, 25.71);
 INSERT INTO orders.products (id, unit_price) VALUES (51, 16499.00);
 INSERT INTO orders.products (id, unit_price) VALUES (52, 11999.00);
 INSERT INTO orders.products (id, unit_price) VALUES (53, 17900.00);
