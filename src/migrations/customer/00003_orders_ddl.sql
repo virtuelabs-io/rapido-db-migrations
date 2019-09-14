@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS orders.header (
     PRIMARY KEY (id),
     FOREIGN KEY (order_status_id) REFERENCES orders.order_status(id),
     FOREIGN KEY (delivery_address_id) REFERENCES customer.address(id)
-);
+) AUTO_INCREMENT=1000000;
 
 CREATE TABLE IF NOT EXISTS orders.item (
     id BIGINT AUTO_INCREMENT,
