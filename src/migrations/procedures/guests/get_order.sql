@@ -7,7 +7,6 @@ BEGIN
 
     SELECT h.id,
            h.order_status_id,
-           h.session_id,
            i.product_id,
            i.quantity,
            i.unit_price,
