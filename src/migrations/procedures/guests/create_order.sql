@@ -55,8 +55,12 @@ BEGIN
         -- Calculate total order vat
         SELECT SUM(t_item_vat) INTO var_order_total_vat FROM tmp_guest_cart_items;
 
-        -- Calculate total order vat
+        -- Calculate order delivery cost
         SELECT cost INTO var_order_delivery_cost FROM guests.delivery_cost WHERE id = in_delivery_cost_id;
+
+        IF var_order_total_price < 300 THEN
+           SET var_order_delivery_cost = var_order_delivery_cost + 30; -- adding min delivery price to the delivery option picked
+        END IF;
 
         -- Creating a new order
 		INSERT INTO guests.header (
