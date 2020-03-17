@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS orders.delivery_cost (
 
 CREATE TABLE IF NOT EXISTS orders.products (
     id MEDIUMINT,
+    item_name VARCHAR(100),
     unit_price DECIMAL(11,2),
-    quantity_in_stock DECIMAL(9,2),
     active BOOLEAN DEFAULT TRUE,
     created_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_on DATETIME ON UPDATE CURRENT_TIMESTAMP,
