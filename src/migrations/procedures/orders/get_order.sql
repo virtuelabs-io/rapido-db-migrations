@@ -11,6 +11,7 @@ BEGIN
            i.product_id,
            i.quantity,
            i.unit_price,
+           i.item_name,
            i.total_price,
            i.item_vat,
            h.order_price,
@@ -31,6 +32,8 @@ BEGIN
 		ON h.id = i.order_id
 	LEFT JOIN customer.address AS a
 		on h.delivery_address_id = a.id
+    LEFT JOIN orders.products AS p
+		on i.product_id = p.id
 	WHERE h.id = in_order_id
     AND   h.customer_id = in_customer_id;
 

@@ -12,8 +12,8 @@ variables:
   fargate: true
   imageName: 'rapido-db-migrations'
   major: 0
-  minor: 0
-  patch: 1
+  minor: 1
+  patch: 0
 
 pr:
   branches:

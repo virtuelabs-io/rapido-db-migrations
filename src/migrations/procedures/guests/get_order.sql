@@ -10,6 +10,7 @@ BEGIN
            i.product_id,
            i.quantity,
            i.unit_price,
+           i.item_name,
            i.total_price,
            i.item_vat,
            h.order_price,
@@ -32,6 +33,8 @@ BEGIN
 		ON h.id = i.order_id
 	LEFT JOIN guests.address AS a
 		on h.session_id = a.session_id
+    LEFT JOIN guests.products AS p
+		on i.product_id = p.id
 	WHERE h.id = in_order_id
     AND   h.session_id = in_session_id;
 
