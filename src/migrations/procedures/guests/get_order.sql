@@ -10,7 +10,7 @@ BEGIN
            i.product_id,
            i.quantity,
            i.unit_price,
-           i.item_name,
+           p.item_name,
            i.total_price,
            i.item_vat,
            h.order_price,
