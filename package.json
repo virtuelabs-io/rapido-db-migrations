@@ -10,7 +10,7 @@
   ],
   "author": "Sangram Reddy",
   "devDependencies": {
-    "codecov": "^3.2.0",
+    "codecov": "^3.7.1",
     "eslint": "^5.15.1",
     "jest": "^24.5.0",
     "jest-junit": "^6.3.0",
